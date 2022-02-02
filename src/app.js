@@ -1,8 +1,16 @@
-require("./db/mongoose"); // connects to mongoDB
+const express = require("express");
+const database = require("./mongodb/mongoose");
 const hnAggregator = require("./hacker-news/aggregator");
+const storyRouter = require("./routers/story");
 
-const start = () => {
-  hnAggregator.run();
-};
+const app = express();
 
-module.exports = { start };
+app.use(express.json());
+app.use("/api", storyRouter);
+
+// connects to MongoDB
+database.connect(() => {
+  // hnAggregator.run();
+});
+
+module.exports = app;

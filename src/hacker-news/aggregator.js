@@ -1,6 +1,5 @@
-const axios = require("axios");
 const { ref, onValue, get } = require("firebase/database");
-const firebaseDB = require("./firebase/database");
+const firebaseRef = require("./firebase/refs");
 const { numbersInRange } = require("../utils/numbers");
 const { filterJustStories } = require("./filters");
 const Setting = require("./models/setting");
@@ -12,21 +11,19 @@ const getItemIdsToProcess = async (itemId) => {
   const latestItemId = parseInt(itemId);
   if (Number.isNaN(latestItemId)) return [];
 
-  // DB Request: get it from setting or set any min item's id (-1000)
+  // DB Request: get it from setting
   const setting = await Setting.findOne({
     name: "lastProcessedItemId",
   });
   console.log({ setting });
+  // or set any min item's id (this could be any number less than maxitem so doing -1000 here)
   const lastProcessedItemId = setting?.value ?? latestItemId - 1000;
 
   return numbersInRange(lastProcessedItemId, latestItemId);
 };
 
 const fetchAndUpdateStories = async (itemIds) => {
-  // HN Request: get item by id
-  const itemPromies = itemIds.map((itemId) =>
-    get(ref(firebaseDB, `v0/item/${itemId}`))
-  );
+  const itemPromies = itemIds.map((id) => get(firebaseRef.item(id)));
   const itemSnapshots = await Promise.all(itemPromies);
   const newStories = itemSnapshots.map((snapshot) =>
     snapshot.exists() ? snapshot.val() : {}
@@ -69,9 +66,7 @@ const fetchNewStories = async (maxItemId) => {
 };
 
 const fetchMaxItemAndNewStories = () => {
-  // HN Request: get the Max Item ID from /v0/maxitem
-  const maxItemRef = ref(firebaseDB, "v0/maxitem");
-  onValue(maxItemRef, (snapshot) => {
+  onValue(firebaseRef.maxitem, (snapshot) => {
     const maxItemId = snapshot.val();
     console.log(`Max Item - ${maxItemId} @ ${Date()}`);
 
@@ -82,9 +77,7 @@ const fetchMaxItemAndNewStories = () => {
 };
 
 const listenUpdates = () => {
-  // HN Request: get updates from /v0/updates
-  const updatesRef = ref(firebaseDB, "v0/updates");
-  onValue(updatesRef, (snapshot) => {
+  onValue(firebaseRef.updates, (snapshot) => {
     const updates = snapshot.val();
     console.log(`Updates: ${updates.items?.length} items @ ${Date()}`);
     if (updates.items?.length) {
