@@ -1,20 +1,27 @@
 const { ItemType } = require("./constants");
 
-const justStories = (items) => {
+const isJustStory = (item) => {
+  return (
+    item?.type === ItemType.story &&
+    !item?.dead &&
+    !["Show HN:", "Ask HN:"].some((prefix) => item?.title?.startsWith(prefix))
+  );
+};
+
+const filterJustStories = (items) => {
   if (items?.length) {
-    // filter stories
-    const allStories = items.filter((item) => item.type === ItemType.story);
-    // filter dead stories
-    const aliveStories = allStories.filter((story) => !story.dead);
-    // filter Show HN and Ask HN
-    const stories = aliveStories.filter(
-      (story) =>
-        !["Show HN:", "Ask HN:"].some((prefix) => story.title?.includes(prefix))
+    // filter out stories > dead > deleted > Show HN and Ask HN
+    return items.filter(
+      (item) =>
+        item.type === ItemType.story &&
+        !item.dead &&
+        !item.deleted &&
+        !["Show HN:", "Ask HN:"].some((prefix) => item.title?.includes(prefix))
     );
-    return stories;
   }
 };
 
 module.exports = {
-  justStories,
+  isJustStory,
+  filterJustStories,
 };
