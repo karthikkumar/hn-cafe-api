@@ -30,7 +30,7 @@ const fetchAndUpdateStories = async (itemIds) => {
   );
   const justStories = filterJustStories(newStories);
 
-  console.log({ justStories, count: justStories.length });
+  console.log({ justStoriesCount: justStories.length });
 
   if (justStories.length) {
     const saveStoryPromises = justStories.map((item) =>
@@ -57,7 +57,7 @@ const fetchNewStories = async (maxItemId) => {
       { value: maxItemId },
       { upsert: true }
     );
-    console.log("updated, lastProcessedItemId: " + maxItemId);
+    console.log("Updated, lastProcessedItemId: " + maxItemId);
   } catch (error) {
     console.log(error);
   } finally {
@@ -69,7 +69,7 @@ const fetchMaxItemAndNewStories = () => {
   console.log("fetching maxItem...");
   onValue(firebaseRef.maxitem(), (snapshot) => {
     const maxItemId = snapshot.val();
-    console.log(`Max Item - ${maxItemId} @ ${Date()}`);
+    console.log(`HN MaxItem - ${maxItemId} @ ${Date()}`);
     if (!isFetchingNewStories) {
       fetchNewStories(maxItemId);
     }
@@ -79,7 +79,7 @@ const fetchMaxItemAndNewStories = () => {
 const listenUpdates = () => {
   onValue(firebaseRef.updates(), (snapshot) => {
     const updates = snapshot.val();
-    console.log(`Updates: ${updates.items?.length} items @ ${Date()}`);
+    console.log(`HN Updates: ${updates.items?.length} items @ ${Date()}`);
     if (updates.items?.length) {
       fetchAndUpdateStories(updates.items);
     }
