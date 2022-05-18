@@ -30,7 +30,7 @@ const fetchAndUpdateStories = async (itemIds) => {
   );
   const justStories = filterJustStories(newStories);
 
-  console.log("justStories count: ", justStories.length);
+  console.log("justStories count: ", justStories?.length);
 
   if (justStories.length) {
     const saveStoryPromises = justStories.map((item) =>
