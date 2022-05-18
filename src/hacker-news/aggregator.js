@@ -39,7 +39,7 @@ const fetchAndUpdateStories = async (itemIds) => {
 
     // DB Request: Save the stories
     await Promise.all(saveStoryPromises);
-    console.log(`saved ${saveStoryPromises.length} stories`);
+    console.log(`Saved ${saveStoryPromises.length} stories`);
   }
 };
 
@@ -66,10 +66,10 @@ const fetchNewStories = async (maxItemId) => {
 };
 
 const fetchMaxItemAndNewStories = () => {
-  onValue(firebaseRef.maxitem, (snapshot) => {
+  console.log("fetching maxItem...");
+  onValue(firebaseRef.maxitem(), (snapshot) => {
     const maxItemId = snapshot.val();
     console.log(`Max Item - ${maxItemId} @ ${Date()}`);
-
     if (!isFetchingNewStories) {
       fetchNewStories(maxItemId);
     }
@@ -77,7 +77,7 @@ const fetchMaxItemAndNewStories = () => {
 };
 
 const listenUpdates = () => {
-  onValue(firebaseRef.updates, (snapshot) => {
+  onValue(firebaseRef.updates(), (snapshot) => {
     const updates = snapshot.val();
     console.log(`Updates: ${updates.items?.length} items @ ${Date()}`);
     if (updates.items?.length) {
