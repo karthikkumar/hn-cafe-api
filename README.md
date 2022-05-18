@@ -1,6 +1,6 @@
 # KOFFEE NEWS API
 
-## HN news aggregator's workflow
+## Hacker News aggregator's workflow
 
 1. On node server boot up, connects to mongo database
 2. HN aggregator module runs on database connected callback
