@@ -15,7 +15,7 @@ const getItemIdsToProcess = async (itemId) => {
   const setting = await Setting.findOne({
     name: "lastProcessedItemId",
   });
-  console.log({ setting });
+  console.log("lastProcessedItemId: ", setting.value);
   // or set any min item's id (this could be any number less than maxitem so doing -1000 here)
   const lastProcessedItemId = setting?.value ?? latestItemId - 1000;
 
@@ -30,7 +30,7 @@ const fetchAndUpdateStories = async (itemIds) => {
   );
   const justStories = filterJustStories(newStories);
 
-  console.log({ justStoriesCount: justStories.length });
+  console.log("justStories count: ", justStories.length);
 
   if (justStories.length) {
     const saveStoryPromises = justStories.map((item) =>
@@ -39,7 +39,7 @@ const fetchAndUpdateStories = async (itemIds) => {
 
     // DB Request: Save the stories
     await Promise.all(saveStoryPromises);
-    console.log(`Saved ${saveStoryPromises.length} stories`);
+    console.log(`Upserted, ${saveStoryPromises.length} stories`);
   }
 };
 
@@ -57,7 +57,7 @@ const fetchNewStories = async (maxItemId) => {
       { value: maxItemId },
       { upsert: true }
     );
-    console.log("Updated, lastProcessedItemId: " + maxItemId);
+    console.log("Updated, lastProcessedItemId: ", maxItemId);
   } catch (error) {
     console.log(error);
   } finally {
@@ -69,7 +69,7 @@ const fetchMaxItemAndNewStories = () => {
   console.log("fetching maxItem...");
   onValue(firebaseRef.maxitem(), (snapshot) => {
     const maxItemId = snapshot.val();
-    console.log(`HN MaxItem - ${maxItemId} @ ${Date()}`);
+    console.log(`HN MaxItem: ${maxItemId} @ ${Date()}`);
     if (!isFetchingNewStories) {
       fetchNewStories(maxItemId);
     }
