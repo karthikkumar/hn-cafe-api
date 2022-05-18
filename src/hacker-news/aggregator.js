@@ -32,7 +32,7 @@ const fetchAndUpdateStories = async (itemIds) => {
 
   console.log("justStories count: ", justStories?.length);
 
-  if (justStories.length) {
+  if (justStories?.length) {
     const saveStoryPromises = justStories.map((item) =>
       Story.updateOne({ id: item.id }, { ...item }, { upsert: true })
     );
