@@ -1,10 +1,11 @@
 {
   "name": "koffee-news-backend",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
+    "prod": "env-cmd -f ./config/prod.env node src/index.js",
     "dev": "env-cmd -f ./config/dev.env node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
