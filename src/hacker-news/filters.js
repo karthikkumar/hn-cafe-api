@@ -16,7 +16,9 @@ const filterJustStories = (items) => {
         item.type === ItemType.story &&
         !item.dead &&
         !item.deleted &&
-        !["Show HN:", "Ask HN:"].some((prefix) => item.title?.includes(prefix))
+        !["Show HN:", "Ask HN:", "Tell HN:"].some((prefix) =>
+          item.title?.includes(prefix)
+        )
     );
   }
 };

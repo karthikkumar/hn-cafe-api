@@ -5,7 +5,8 @@ const router = express.Router();
 
 router.get("/stories", async (req, res) => {
   try {
-    const { top = 5, startTime, endTime } = req.query;
+    const { top = 30, startTime, endTime } = req.query;
+    console.log("GET /stories & query: ", req.query);
 
     const start = parseInt(startTime);
     const end = parseInt(endTime);
@@ -23,8 +24,9 @@ router.get("/stories", async (req, res) => {
 
     const topStories = stories.slice(0, top);
     res.send(topStories);
-  } catch (e) {
-    res.status(500).send(e);
+  } catch (error) {
+    console.log({ error });
+    res.status(500).send(error);
   }
 });
 
