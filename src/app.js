@@ -12,7 +12,7 @@ const corsOptions = {
     if (whitelist.some((item) => item.includes(origin))) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      callback(new Error(`Origin: ${origin}, not allowed by CORS`));
     }
   },
 };
