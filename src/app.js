@@ -28,7 +28,7 @@ app.use("/api", storyRouter);
 
 // connects to MongoDB
 database.connect(() => {
-  // hnAggregator.run();
+  hnAggregator.run();
 });
 
 module.exports = app;
