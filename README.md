@@ -1,4 +1,4 @@
-# KOFFEE NEWS API
+# HN Cafe API
 
 ## Hacker News aggregator's workflow
 
