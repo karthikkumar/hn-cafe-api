@@ -15,7 +15,7 @@ const getItemIdsToProcess = async (itemId) => {
   const setting = await Setting.findOne({
     name: "lastProcessedItemId",
   });
-  console.log("lastProcessedItemId: ", setting.value);
+  console.log("lastProcessedItemId: ", setting?.value);
   // or set any min item's id (this could be any number less than maxitem so doing -1000 here)
   const lastProcessedItemId = setting?.value ?? latestItemId - 1000;
 
@@ -41,7 +41,7 @@ const fetchAndUpdateStories = async (itemIds) => {
 
     // DB Request: Save the stories
     await Promise.all(saveStoryPromises);
-    console.log(`Upserted, ${saveStoryPromises.length} stories`);
+    console.log(`Upserted, ${saveStoryPromises?.length} stories`);
   }
 };
 
@@ -81,7 +81,7 @@ const fetchMaxItemAndNewStories = () => {
 const listenUpdates = () => {
   onValue(firebaseRef.updates(), (snapshot) => {
     const updates = snapshot.val();
-    console.log(`HN Updates: ${updates.items?.length} items @ ${Date()}`);
+    console.log(`HN Updates: ${updates?.items?.length} items @ ${Date()}`);
     if (updates.items?.length) {
       fetchAndUpdateStories(updates.items);
     }
