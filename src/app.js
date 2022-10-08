@@ -9,7 +9,7 @@ const app = express();
 const whitelist = ["localhost:3000", "hackernews.cafe"];
 const corsOptions = {
   origin: function (origin, callback) {
-    if (whitelist.some((item) => origin.includes(item))) {
+    if (whitelist.some((item) => origin?.includes(item))) {
       callback(null, true);
     } else {
       callback(new Error(`Origin: ${origin}, not allowed by CORS`));
