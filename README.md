@@ -1,4 +1,4 @@
-# HN Cafe API
+# Backend for hackernews.today 
 
 ## Hacker News aggregator's workflow
 
@@ -20,4 +20,4 @@
 ## Time and Timezone
 
 - HN data timestamps are in UTC (Unix time)
-- Koffee News API endpoint queries support Unix time
+- HN API endpoint queries support Unix time
